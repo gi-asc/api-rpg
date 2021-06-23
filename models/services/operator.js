@@ -14,7 +14,7 @@ module.exports = {
             }
         })
         if(!encontrado){
-            throw new NaoEncontrado();
+            throw new Error("Não encontrado");
         }
 
         return encontrado;

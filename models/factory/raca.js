@@ -13,7 +13,7 @@ class FactoryRaca {
         this.descricao = descricao;
     }
 
-    gerarRaca(){
+    gerar(){
         Array.from(this.bonus).forEach(element => {
             if(typeof element !== "integer"){
                 throw new Error("Dados Inválidos");

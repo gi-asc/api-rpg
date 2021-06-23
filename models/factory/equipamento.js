@@ -8,7 +8,7 @@ class FactoryEquipamento {
         this.preco = preco;
     }
 
-    gerarEquipamento(){
+    gerar(){
         if(typeof this.peso !== "number" || typeof this.preco !== "number" || typeof this.tipo !== "string" ){
             throw new Error("Propriedades inválidas");
         }
