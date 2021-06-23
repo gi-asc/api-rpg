@@ -1,0 +1,11 @@
+{
+    "mysql" : {
+        "db" : "rpg-api",
+        "user" : "root",
+        "senha" : "",
+        "host" : "localhost"
+    },
+    "api": {
+        "porta": 8081
+    }
+}
