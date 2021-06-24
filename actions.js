@@ -6,24 +6,28 @@ module.exports = {
     const listagem = await operator.listar(modelo);
     res.send(listagem);})
     }catch(erro){
-res.send(JSON.stringify(erro));
+res.send(JSON.stringify(erro))
     }
     },
     
-    insere(router, modelo, instancia){
-try{        router.post('/', async (req, res)=>{
-        const dados = req.body;
-        const novo = await new instancia(dados);
-        await operator.inserir(dados, modelo);
-    
-     res.send(JSON.stringify({
-         "Mensagem" : "Inserido com sucesso",
-         "Dados" : novo
-     }));
-    })}
-    catch(erro){
-        res.send(JSON.stringify(erro))
-    }
+   insere(router, modelo, instancia){
+        router.post('/',  async (req, res) => {
+            try{
+            const dados = await req.body;
+            let dadosCompleto = dados;
+            const key = await req.params.key;
+
+            if(key !== null){
+                dadosCompleto = await Object.assign({}, dados, {key : key})
+            }
+            const novo = new instancia(dadosCompleto);
+            await novo.gerar();
+            await operator.inserir(dadosCompleto, modelo)
+            res.send(JSON.stringify(novo))
+        }catch(erro){
+            console.log(erro)
+        }
+        })
     },
     
     buscaId(router, modelo){

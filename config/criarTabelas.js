@@ -4,6 +4,7 @@ const modelos = [
     require('../models/tabelas/racas'),
     require('../models/tabelas/equipamento'),
     require('../models/tabelas/proeficiencias'),
+    require('../models/tabelas/caracteristicas'),
 ];
 
 async function criarTabela() {

@@ -1,9 +1,9 @@
 module.exports = {
-    listar (Modelo) {
+    async listar (Modelo) {
         return Modelo.findAll({raw : true})
     },
 
-    inserir(dados, Modelo) {
+    async inserir(dados, Modelo) {
         return Modelo.create(dados);
     },
 
