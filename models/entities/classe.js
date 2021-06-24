@@ -1,5 +1,5 @@
 class Classe {
-    constructor({nome, dadoVida, descricao, proeficiencias = [], bonusProef, caracteristicas = [], pericias = [], equipamentoBasico = []}){
+    constructor({nome, dadoVida, descricao, proeficiencias, bonusProef, caracteristicas, pericias, equipamentoBasico}){
         this.nome = nome;
         this.dadoVida = dadoVida;
         this.descricao = descricao;
@@ -12,10 +12,13 @@ class Classe {
 }
 
 class ClasseConjuradora extends Classe {
-    constructor(nome, dadoVida, descricao, proeficiencias = [], bonusProef, caracteristicas = [], pericias = [], equipamentoBasico = [], kitConjurador){
-        super(nome, dadoVida, descricao, proeficiencias = [], bonusProef, caracteristicas = [], pericias = [], equipamentoBasico = [])
+    constructor(nome, dadoVida, descricao, proeficiencias = {}, bonusProef, caracteristicas = {}, pericias = {}, equipamentoBasico = {}, kitConjurador){
+        super(nome, dadoVida, descricao, proeficiencias = {}, bonusProef, caracteristicas = {}, pericias = {}, equipamentoBasico = {})
         this.kitConjurador = kitConjurador;
     }
 }
 
-module.exports = Classe
+module.exports = {
+    Classe : Classe,
+    ClasseConjuradora : ClasseConjuradora
+}

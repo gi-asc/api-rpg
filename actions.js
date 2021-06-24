@@ -1,22 +1,29 @@
 const operator = require('./models/services/operator');
 module.exports = {
     list(router, modelo){
-    router.get('/', async (req, res)=>{
+        try
+{    router.get('/', async (req, res)=>{
     const listagem = await operator.listar(modelo);
-    res.send(listagem);
-    })},
+    res.send(listagem);})
+    }catch(erro){
+res.send(JSON.stringify(erro));
+    }
+    },
     
     insere(router, modelo, instancia){
-        router.post('/', async (req, res)=>{
+try{        router.post('/', async (req, res)=>{
         const dados = req.body;
-        const novo = new instancia(dados).gerar();
+        const novo = await new instancia(dados);
         await operator.inserir(dados, modelo);
     
      res.send(JSON.stringify({
          "Mensagem" : "Inserido com sucesso",
          "Dados" : novo
      }));
-    })
+    })}
+    catch(erro){
+        res.send(JSON.stringify(erro))
+    }
     },
     
     buscaId(router, modelo){

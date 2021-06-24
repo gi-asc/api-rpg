@@ -28,7 +28,16 @@ class FactoryRaca {
         if(typeof this.idioma !== "string" || tendencias.indexOf(this.tendencia) === -1 || typeof this.descricao !== "string" || typeof this.deslocamento !== "number" || typeof this.tamanho !== "number" || typeof this.nome !== "string"){
             throw new Error("Dados Inválidos");
         }
-    return new Raca(this.nome, this.bonus, this.tendencia, this.tamanho, this.listaProeficiencias, this.idioma, this.deslocamento, this.descricao);
+        const nome = this.nome;
+        const bonus = this.bonus;
+        const tendencia = this.tendencia;
+        const tamanho = this.tamanho;
+        const listaProeficiencias = this.listaProeficiencias;
+        const idioma = this.idioma;
+        const deslocamento = this.deslocamento;
+        const descricao = this.descricao;
+
+    return new Raca({"nome" : nome, "bonus" : bonus, "tendencia" : tendencia, "tamanho" : tamanho, "listaProeficiencias" : listaProeficiencias, "idioma" : idioma, "deslocamento" : deslocamento, "descricao" : descricao});
     }
 }
 

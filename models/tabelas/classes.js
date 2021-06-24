@@ -7,7 +7,7 @@ const colunas = {
         allowNull: false
     },
     dadoVida: {
-        type: Sequelize.ENUM('D6', 'D8', 'D10', 'D12'),
+        type: Sequelize.INTEGER,
         allowNull: false
     },
     descricao: {

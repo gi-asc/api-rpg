@@ -3,6 +3,7 @@ const modelos = [
     require('../models/tabelas/classes'),
     require('../models/tabelas/racas'),
     require('../models/tabelas/equipamento'),
+    require('../models/tabelas/proeficiencias'),
 ];
 
 async function criarTabela() {
