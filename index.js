@@ -5,11 +5,24 @@ const classes = require('./rotas/classes');
 const racas = require('./rotas/racas');;
 const bodyParser = require('body-parser');
 const NaoEncontrado = require('./models/erros/NaoEncontrado');
+const formatos = require('./models/services/serializador').formatosAceitos;
 
-app.use(bodyParser.json())
-app.use('/api/equipamentos', equipamento);
-app.use('/api/classes', classes);
-app.use('/api/racas', racas);
+app.use((req, res, proximo)=>{
+    let formato = req.header('Accept');
+
+    if(formato === '*/*'){
+        formato = 'application/json';
+    }
+
+    if(formatos.indexOf(formato) === -1){
+        res.status(406);
+        res.end();
+        return;
+    }
+
+    res.setHeader('Content-Type', formato);
+    proximo();
+})
 
 app.use((erro, req, res, proximo)=>{
     if(erro instanceof NaoEncontrado){
@@ -23,5 +36,9 @@ app.use((erro, req, res, proximo)=>{
     proximo()
     })
     
+app.use(bodyParser.json())
+app.use('/api/equipamentos', equipamento);
+app.use('/api/classes', classes);
+app.use('/api/racas', racas);
 
 app.listen(3001, ()=>console.log("Tudo ocorrendo bem"));

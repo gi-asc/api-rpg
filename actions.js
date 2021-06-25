@@ -1,11 +1,16 @@
 const NaoEncontrado = require('./models/erros/NaoEncontrado');
 const operator = require('./models/services/operator');
+const Serializador = require('./models/services/serializador').Serializador;
+
 module.exports = {
     list(router, modelo){
         try
 {    router.get('/', async (req, res)=>{
+    
     const listagem = await operator.listar(modelo);
-    res.status(200).send(listagem);})
+    res.status(200)
+    const serializador = new Serializador(res.getHeader('Content-Type'));
+    res.send(JSON.stringify(serializador.serializar(listagem)));})
     }catch(erro){
 throw new NaoEncontrado();
     }
@@ -13,6 +18,7 @@ throw new NaoEncontrado();
     
    insere(router, modelo, instancia){
         router.post('/',  async (req, res) => {
+            
             try{
             const dados = await req.body;
             let dadosCompleto = dados;
@@ -25,7 +31,8 @@ throw new NaoEncontrado();
             await novo.gerar();
             await operator.inserir(dadosCompleto, modelo)
             res.status(201)
-            res.send(JSON.stringify(novo))
+            const serializador = new Serializador(res.getHeader('Content-Type'));
+            res.send(JSON.stringify(serializador.serializar(novo)))
         }catch(erro){
             throw new NaoEncontrado();
                 }
@@ -35,9 +42,11 @@ throw new NaoEncontrado();
     buscaId(router, modelo){
         try{
     router.get('/:id', async (req, res)=>{
+        
     const encontrado = await operator.buscar(req.params.id, modelo);
     res.status(200);
-    res.send(JSON.stringify(encontrado))})}
+    const serializador = new Serializador(res.getHeader('Content-Type'));
+    res.send(JSON.stringify(serializador.serializar(encontrado)))})}
     catch(erro){
         throw new NaoEncontrado();
             }
