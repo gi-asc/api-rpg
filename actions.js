@@ -3,18 +3,29 @@ const operator = require('./models/services/operator');
 const Serializador = require('./models/services/serializador').Serializador;
 
 module.exports = {
+
+    permiteOperar(router){
+        router.options('/:id', (req, res, proximo)=>{
+            res.set('Access-Control-Allow-Methods', 'GET,PUT, POST, DELETE');
+            res.set('Access-Control-Allow-Headers', 'Content-Type');
+            res.status(200);
+            res.end()
+        })
+    },
+
     list(router, modelo){
         try
-{    router.get('/', async (req, res)=>{
+{    router.get('/', async (req, res, proximo)=>{
     
     const listagem = await operator.listar(modelo);
     res.status(200)
     const serializador = new Serializador(res.getHeader('Content-Type'));
-    res.send(JSON.stringify(serializador.serializar(listagem)));})
+    res.send(serializador.serializar(listagem));})
     }catch(erro){
 throw new NaoEncontrado();
     }
     },
+
     
    insere(router, modelo, instancia){
         router.post('/',  async (req, res) => {
@@ -29,35 +40,63 @@ throw new NaoEncontrado();
             }
             const novo = new instancia(dadosCompleto);
             await novo.gerar();
-            await operator.inserir(dadosCompleto, modelo)
+            const model = await operator.inserir(dadosCompleto, modelo)
+            const timestamps = (new Date(model.dataAtualizacao)).getTime()
             res.status(201)
+            res.set('Etag', model.versao);
+            res.set('Last-Modified', timestamps);
             const serializador = new Serializador(res.getHeader('Content-Type'));
-            res.send(JSON.stringify(serializador.serializar(novo)))
+            res.send(serializador.serializar(novo))
         }catch(erro){
-            throw new NaoEncontrado();
+            proximo(erro)
                 }
         })
     },
     
-    buscaId(router, modelo){
+    buscaId(router, modelo, instancia){
         try{
     router.get('/:id', async (req, res)=>{
         
     const encontrado = await operator.buscar(req.params.id, modelo);
+    const obj = new instancia(encontrado);
+    await obj.gerar()
     res.status(200);
+               const timestamps = (new Date(obj.dataAtualizacao)).getTime()
+            res.set('Etag', obj.versao);
+            res.set('Last-Modified', timestamps);
     const serializador = new Serializador(res.getHeader('Content-Type'));
-    res.send(JSON.stringify(serializador.serializar(encontrado)))})}
+    res.send(serializador.serializar(obj))})}
     catch(erro){
-        throw new NaoEncontrado();
+        proximo(erro);
             }
     },
     
-    modifica(router, modelo, proximo)
+    headFunc(router, modelo){
+        try{
+            router.head('/:id', async (req, res)=>{
+                
+            const encontrado = await operator.buscar(req.params.id, modelo);
+            const obj = new instancia(encontrado);
+            await obj.gerar()
+            res.status(200);
+                    const timestamps = (new Date(obj.dataAtualizacao)).getTime()
+                    res.set('Etag', obj.versao);
+                    res.set('Last-Modified', timestamps);
+            res.end()})}
+            catch(erro){
+                proximo(erro);
+                    }
+    },
+
+    modifica(router, modelo)
    {
     try   
-    {router.put('/:id', async (req, res, )=>{
-        await operator.atualizar(req.params.id, req.body, modelo);
+    {router.put('/:id', async (req, res)=>{
+        const obj = await operator.atualizar(req.params.id, req.body, modelo);
         res.status(204);
+        const timestamps = (new Date(obj.dataAtualizacao)).getTime()
+        res.set('Etag', obj.versao);
+        res.set('Last-Modified', timestamps);
         res.send("dados atualizados!");
         res.end();
     })}catch(erro){

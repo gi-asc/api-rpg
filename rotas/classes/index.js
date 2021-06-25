@@ -6,21 +6,12 @@ const caracteristicas = require('./caracteristicas');
 
 actions.list(router, modelo);
 actions.insere(router, modelo, instancia);
-actions.buscaId(router, modelo);
+actions.buscaId(router, modelo, instancia);
+actions.headFunc(router, modelo, instancia);
+actions.modifica(router, modelo);
 actions.deletar(router, modelo);
+actions.permiteOperar(router);
 
-const verificaClasse = async (req, res, proximo)=>{
 
-try{
-   const id = req.params.key;
-   const rota = '/'+id
-   await actions.buscaId(rota, modelo);
-   req.key = id;
-   proximo()
-}catch(erro){
-proximo(erro)
-}
-}
-
-router.use('/:key/caracteristicas',verificaClasse, caracteristicas)
+router.use('/:key/caracteristicas', caracteristicas)
 module.exports = router;

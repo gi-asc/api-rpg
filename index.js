@@ -2,10 +2,18 @@ const express = require('express');
 const app = express();
 const equipamento = require('./rotas/equipamentos');
 const classes = require('./rotas/classes');
-const racas = require('./rotas/racas');;
+const racas = require('./rotas/racas');
 const bodyParser = require('body-parser');
 const NaoEncontrado = require('./models/erros/NaoEncontrado');
 const formatos = require('./models/services/serializador').formatosAceitos;
+
+
+app.use(bodyParser.json())
+
+app.use((req, res, proximo)=>{
+    res.set("Access-Control-Allow-Origin", "*");
+    proximo();
+})
 
 app.use((req, res, proximo)=>{
     let formato = req.header('Accept');
@@ -23,7 +31,9 @@ app.use((req, res, proximo)=>{
     res.setHeader('Content-Type', formato);
     proximo();
 })
-
+app.use('/api/equipamentos', equipamento);
+app.use('/api/classes', classes);
+app.use('/api/racas', racas);
 app.use((erro, req, res, proximo)=>{
     if(erro instanceof NaoEncontrado){
         res.status(404);
@@ -33,12 +43,8 @@ app.use((erro, req, res, proximo)=>{
     res.send(JSON.stringify({
         message: erro.message
     }))
-    proximo()
     })
     
-app.use(bodyParser.json())
-app.use('/api/equipamentos', equipamento);
-app.use('/api/classes', classes);
-app.use('/api/racas', racas);
+
 
 app.listen(3001, ()=>console.log("Tudo ocorrendo bem"));

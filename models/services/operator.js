@@ -1,16 +1,16 @@
 const NaoEncontrado = require("../erros/NaoEncontrado");
 
 module.exports = {
-    async listar (Modelo) {
+    listar (Modelo) {
         return Modelo.findAll({raw : true})
     },
 
-    async inserir(dados, Modelo) {
+    inserir(dados, Modelo) {
         return Modelo.create(dados);
     },
 
-    async buscar(id, Modelo){
-        const encontrado = await Modelo.findOne({
+    buscar(id, Modelo){
+        const encontrado = Modelo.findOne({
             where : {
                 id : id
             }
@@ -22,7 +22,7 @@ module.exports = {
         return encontrado;
     },
 
-    async atualizar(id, dados, Modelo){
+    atualizar(id, dados, Modelo){
   return Modelo.update(dados,
     {
         where: {
@@ -31,7 +31,7 @@ module.exports = {
     })
     },
 
-    async remover(id, Modelo){
+    remover(id, Modelo){
         return Modelo.destroy({
             where : {
                 id : id

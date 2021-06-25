@@ -3,24 +3,18 @@ const jsontoxml = require('jsontoxml');
 
 class Serializador {
     constructor(contentType){
-        this.contentType = contentType;
+        this.contentType = contentType
     }
-
     json (dados) {
         return JSON.stringify(dados)
     }
 
     xml(dados){
-        let tag = this.tagSingular;
-
-        if(Array.isArray(dados)){
-            tag = this.tagPlural
-        }
-
-        return jsontoxml({[tag] : dados})
+        return jsontoxml(dados)
     }
 
     serializar (dados) {
+        dados = this.filtrar(dados);
         if (this.contentType === 'application/json') {
             return this.json(dados)
         }
@@ -31,7 +25,12 @@ class Serializador {
 
         throw new ValorNaoSuportado(this.contentType)
     }
+
+    filtrar(dados){
+        return dados;
+    }
 }
+
 
 module.exports = {
     Serializador : Serializador,

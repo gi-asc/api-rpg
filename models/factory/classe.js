@@ -23,7 +23,7 @@ class FactoryClasse {
         const pericia = this.pericias;
         const equip = this.equipamentoBasico;
 
-        if(typeof nome !== "string" || typeof descricao !== "string" || typeof bonus !== "integer" || typeof dadoVida !== "integer"){
+        if(typeof nome !== "string" || typeof descricao !== "string" || typeof bonus !== "number" || typeof dadoVida !== "number"){
             throw new ValorNaoSuportado();
         }
 
