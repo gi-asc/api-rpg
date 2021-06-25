@@ -1,3 +1,5 @@
+const NaoEncontrado = require("../erros/NaoEncontrado");
+
 module.exports = {
     async listar (Modelo) {
         return Modelo.findAll({raw : true})
@@ -14,7 +16,7 @@ module.exports = {
             }
         })
         if(!encontrado){
-            throw new Error("Não encontrado");
+            throw new NaoEncontrado();
         }
 
         return encontrado;

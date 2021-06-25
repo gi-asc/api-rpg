@@ -1,4 +1,5 @@
 const Caracteristica = require("../entities/caractetistica");
+const ValorNaoSuportado = require("../erros/ValorNaoSuportado");
 
 class FactoryCaracteristica {
     constructor({nome, descricao, nivel, key}){
@@ -14,7 +15,7 @@ class FactoryCaracteristica {
         const nivel = this.nivel; 
         const classId = this.classId;
         if(typeof nome !== "string" || typeof descricao !== "string" || typeof nivel !== "number"){
-            throw new Error("Dados inválidos");
+            throw new ValorNaoSuportado();
         }
         return new Caracteristica({"nome" : nome, "descricao" : descricao, "nivel" : nivel, "key" : classId});
     }

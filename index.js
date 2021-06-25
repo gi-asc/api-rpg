@@ -4,6 +4,7 @@ const equipamento = require('./rotas/equipamentos');
 const classes = require('./rotas/classes');
 const racas = require('./rotas/racas');;
 const bodyParser = require('body-parser');
+const NaoEncontrado = require('./models/erros/NaoEncontrado');
 
 app.use(bodyParser.json())
 app.use('/api/equipamentos', equipamento);
@@ -19,7 +20,7 @@ app.use((erro, req, res, proximo)=>{
     res.send(JSON.stringify({
         message: erro.message
     }))
-    
+    proximo()
     })
     
 

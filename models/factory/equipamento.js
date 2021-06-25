@@ -1,4 +1,5 @@
 const Equipamento = require("../entities/equipamento");
+const ValorNaoSuportado = require("../erros/ValorNaoSuportado");
 
 class FactoryEquipamento {
     constructor({nome, tipo, peso, preco}){
@@ -10,7 +11,7 @@ class FactoryEquipamento {
 
     gerar(){
         if(typeof this.peso !== "number" || typeof this.preco !== "number" || typeof this.tipo !== "string" ){
-            throw new Error("Propriedades inválidas");
+            throw new ValorNaoSuportado();
         }
         const nome = this.nome;
         const tipo = this.tipo; 

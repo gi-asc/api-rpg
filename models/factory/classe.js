@@ -1,4 +1,5 @@
 const Classe = require("../entities/classe").Classe;
+const ValorNaoSuportado = require("../erros/ValorNaoSuportado");
 
 class FactoryClasse {
     constructor({nome, dadoVida, descricao, proeficiencias = {}, bonusProef, caracteristicas = {}, pericias = {}, equipamentoBasico = {}}){
@@ -23,7 +24,7 @@ class FactoryClasse {
         const equip = this.equipamentoBasico;
 
         if(typeof nome !== "string" || typeof descricao !== "string" || typeof bonus !== "integer" || typeof dadoVida !== "integer"){
-            throw new Error("Dados inválidos");
+            throw new ValorNaoSuportado();
         }
 
         return new Classe({"nome" : nome, "dadoVida" : dadoVida, "descricao" : descricao, "proeficiencias" : proeficiencia, "bonusProef" : bonus, "caracteristicas" : caracteristica, "pericias" : pericia, "equipamentoBase" : equip});

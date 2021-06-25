@@ -1,5 +1,6 @@
 const Proeficiencia = require("../entities/caractetistica");
 const habilidades = require('./habilidades');
+const ValorNaoSuportado = require("../erros/ValorNaoSuportado");
 
 class FactoryProeficiencia {
     constructor({nome, descricao, habilidade}){
@@ -11,7 +12,7 @@ class FactoryProeficiencia {
     gerar(){
 
         if(habilidades.indexOf(this.habilidade) === -1 || typeof this.nome !== "string" || this.nome === "" || typeof this.descricao != "string" || this.descricao === ""){
-            throw new Error("Dados inválidos");
+            throw new ValorNaoSuportado();
         }
         const nome = this.nome;
         const descricao = this.descricao;

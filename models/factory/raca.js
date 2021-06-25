@@ -1,5 +1,6 @@
 const Raca = require('../entities/raca');
 const tendencias = require('./tendencias');
+const ValorNaoSuportado = require("../erros/ValorNaoSuportado");
 
 class FactoryRaca {
     constructor(nome, bonus = {forca, destreza, inteligencia, sabedoria, constituicao, carisma}, tendencia, tamanho, listaProeficiencias = {}, idioma, deslocamento, descricao){
@@ -16,17 +17,17 @@ class FactoryRaca {
     gerar(){
         Array.from(this.bonus).forEach(element => {
             if(typeof element !== "integer"){
-                throw new Error("Dados Inválidos");
+                throw new ValorNaoSuportado();
             }
         });
 
         this.listaProeficiencias.forEach(element =>{
             if(typeof element !== "string"){
-                throw new Error("Dados Inválidos");
+                throw new ValorNaoSuportado();
             }
         })
         if(typeof this.idioma !== "string" || tendencias.indexOf(this.tendencia) === -1 || typeof this.descricao !== "string" || typeof this.deslocamento !== "number" || typeof this.tamanho !== "number" || typeof this.nome !== "string"){
-            throw new Error("Dados Inválidos");
+            throw new ValorNaoSuportado();
         }
         const nome = this.nome;
         const bonus = this.bonus;
